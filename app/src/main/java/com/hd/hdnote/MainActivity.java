@@ -76,9 +76,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener  
 
         Button add=findViewById(R.id.add);
         Button tomorrow=(Button)findViewById(R.id.tomorrow);
+        Button everyday=(Button)findViewById(R.id.everyday);
+
 
         add.setOnClickListener(this);
         tomorrow.setOnClickListener(this);
+        everyday.setOnClickListener(this);
 
     }
 
@@ -94,11 +97,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener  
                 startActivity(intent1);
                 break;
             case R.id.everyday:
-                Intent intent2 =new Intent(this,ShowActivity.class);
+                Intent intent2 =new Intent(MainActivity.this,ShowActivity.class);
                 intent2.putExtra("table","Everyday");
                 startActivity(intent2);
             case R.id.add:
-                Utils.add(this);
+                Intent intent3 = new Intent(MainActivity.this,AddActivity.class);
+                startActivity(intent3);
 
             default:
                 break;

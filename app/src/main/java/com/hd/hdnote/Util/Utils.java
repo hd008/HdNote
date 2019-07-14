@@ -103,14 +103,40 @@ public class Utils {
         db.delete(table,"id=?",whereArgs);
     }
 
-    public static  void add(Context context){
+    public static  void add(Context context,String table,int time,String thing){
+//        dbHelper = DatabaseHelper.getInstance(context);
+//        SQLiteDatabase db=dbHelper.getWritableDatabase();
+//        int x=(int)(Math.random()*1000);
+//
+//        String test="测试"+x;
+//
+//        db.execSQL("insert into  Today(id,time,thing,ok) values("+x+",6,'"+test+"',0)");
+
+
         dbHelper = DatabaseHelper.getInstance(context);
         SQLiteDatabase db=dbHelper.getWritableDatabase();
-        int x=(int)(Math.random()*1000);
 
-        String test="测试"+x;
+        int id=(int)(Math.random()*1000);
+        String sql6=null;
+        if(table.contains("Today")){
+            sql6 = "insert into  Today(id,time,thing,ok) values("+id+","+time+",'"+thing+"',0)";
 
-        db.execSQL("insert into  Today(id,time,thing,ok) values("+x+",6,'"+test+"',0)");
+        }
+        if(table.contains("Tomorrow")) {
 
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sql6 = "insert into  Tomorrow(id,time,thing,date) values("+id+","+time+",'"+thing+"','"+sdf.format(date)+"')";
+        }
+        if(table.contains("Everyday")){
+
+            sql6 = "insert into  Everyday(id,time,thing) values("+id+","+time+",'"+thing+"')";
+
+
+        }
+        // System.out.println(sdf.format(date));
+
+
+        db.execSQL(sql6);
     }
 }
