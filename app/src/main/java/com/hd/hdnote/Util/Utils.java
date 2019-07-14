@@ -7,7 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import com.hd.hdnote.Dao.DatabaseHelper;
 import com.hd.hdnote.Dao.Thing;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Utils {
@@ -36,12 +38,11 @@ public class Utils {
             while (cursor.moveToNext()) {
 
                 thing = new Thing();
+                thing.id=cursor.getInt(cursor.getColumnIndex("id"));
                 thing.time= cursor.getInt(cursor.getColumnIndex("time"));
                 thing.thing= cursor.getString(cursor.getColumnIndex("thing"));
 
                 list.add(thing);
-
-
 
             }
 
@@ -71,6 +72,8 @@ public class Utils {
         while (cursor.moveToNext()) {
 
             thing = new Thing();
+            thing.id=cursor.getInt(cursor.getColumnIndex("id"));
+
             thing.time= cursor.getInt(cursor.getColumnIndex("time"));
             thing.thing= cursor.getString(cursor.getColumnIndex("thing"));
 
@@ -85,19 +88,29 @@ public class Utils {
         return list;
     }
 
-    public static void delete(Context context,String table,String thing) {
+    public static void delete(Context context,String table,int id) {
 
 
 
         dbHelper = DatabaseHelper.getInstance(context);//数据库传递 context
 
-        list = new ArrayList<>();
-
         //Int size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));
         //查询数据库
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.execSQL("delete from "+table+" where thing="+thing);
+
+        String[] whereArgs = {String.valueOf(id)};
+        db.delete(table,"id=?",whereArgs);
+    }
+
+    public static  void add(Context context){
+        dbHelper = DatabaseHelper.getInstance(context);
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        int x=(int)(Math.random()*1000);
+
+        String test="测试"+x;
+
+        db.execSQL("insert into  Today(id,time,thing,ok) values("+x+",6,'"+test+"',0)");
 
     }
 }

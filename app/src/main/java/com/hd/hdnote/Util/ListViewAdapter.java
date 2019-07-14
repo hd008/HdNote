@@ -2,6 +2,7 @@ package com.hd.hdnote.Util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hd.hdnote.Dao.DatabaseHelper;
 import com.hd.hdnote.Dao.Thing;
 import com.hd.hdnote.MainActivity;
 import com.hd.hdnote.R;
@@ -21,6 +23,8 @@ public class ListViewAdapter extends BaseAdapter {
     private List<Thing> list;
     private Context context;
     private String table;
+    private static DatabaseHelper dbHelper;
+
 
 
     public ListViewAdapter(List<Thing>list,Context context,String table){
@@ -48,7 +52,7 @@ public class ListViewAdapter extends BaseAdapter {
         }else{
             viewHolder= (ViewHolder) convertView.getTag();
         }
-        viewHolder.tvContent.setText(list.get(position).time+"  "+list.get(position).thing);
+        viewHolder.tvContent.setText(" "+list.get(position).time+"  "+list.get(position).thing);
 
 //      点击事件
         final ViewHolder  finalViewHolder= viewHolder;
@@ -56,14 +60,15 @@ public class ListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 //              删除list中对应的数据
-                list.remove(position);
-               System.out.println("1232321"+context.toString());
-               String table;
+              // System.out.println("1232321"+context.toString());
 
+                Utils.delete(context,table,list.get(position).id);
 //              重新绑定数据
                 notifyDataSetChanged();
 //              关闭侧滑菜单
                 finalViewHolder.swipeMenuLayout.quickClose();
+                list.remove(position);
+
             }
         });
 

@@ -20,23 +20,23 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         //创建数据库sql语句 并 执行
-        String sql = "create table Today(time int(20),thing varchar(20),ok int(10))";
-        String sql1 = "create table Everyday(time int(20),thing varchar(20))";
-        String sql2 = "create table Tomorrow(time int(20),thing varchar(20),date varchar(20))";
+        String sql = "create table Today(id int(20),time int(20),thing varchar(20),ok int(10))";
+        String sql1 = "create table Everyday(id int(20),time int(20),thing varchar(20))";
+        String sql2 = "create table Tomorrow(id int(20),time int(20),thing varchar(20),date varchar(20))";
 
-        String sql3 = "insert into  Today(time,thing,ok) values(1,'today测试',0)";
+        String sql3 = "insert into  Today(id,time,thing,ok) values(1,1,'today测试',0)";
 
 
 
-        String sql4 = "insert into  Everyday(time,thing) values(1,'everyday测试')";
+        String sql4 = "insert into  Everyday(id,time,thing) values(2,2,'everyday测试')";
 
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
        // System.out.println(sdf.format(date));
 
-        String sql5 = "insert into  Tomorrow(time,thing,date) values(1,'tomorrow测试','"+sdf.format(date)+"')";
+        String sql5 = "insert into  Tomorrow(id,time,thing,date) values(3,1,'tomorrow测试','"+sdf.format(date)+"')";
 
-        String sql6 = "insert into  Today(time,thing,ok) values(16,'today测试2',0)";
+        String sql6 = "insert into  Today(id,time,thing,ok) values(4,16,'today测试2',0)";
 
 
         db.execSQL(sql);

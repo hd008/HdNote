@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener  
 //        System.out.println(list.get(0).thing);
 
 
-        ListViewAdapter myAdapter = new ListViewAdapter(list,this);//list 音乐信息
+        ListViewAdapter myAdapter = new ListViewAdapter(list,this,"Today");//list 音乐信息
 
 
         mylist.setAdapter(myAdapter);
@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener  
                 Intent intent2 =new Intent(this,ShowActivity.class);
                 intent2.putExtra("table","Everyday");
                 startActivity(intent2);
+            case R.id.add:
+                Utils.add(this);
 
             default:
                 break;
