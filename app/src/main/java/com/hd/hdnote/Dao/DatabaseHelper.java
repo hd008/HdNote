@@ -23,6 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         String sql = "create table Today(id int(20),time int(20),thing varchar(20),ok int(10))";
         String sql1 = "create table Everyday(id int(20),time int(20),thing varchar(20))";
         String sql2 = "create table Tomorrow(id int(20),time int(20),thing varchar(20),date varchar(20))";
+        String sql7 = "create table tbdate(date varchar(20))";
 
         String sql3 = "insert into  Today(id,time,thing,ok) values(1,1,'today测试',0)";
 
@@ -38,6 +39,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         String sql6 = "insert into  Today(id,time,thing,ok) values(4,16,'today测试2',0)";
 
+        String sql8 = "insert into  tbdate(date) values('"+sdf.format(date)+"')";
+
 
         db.execSQL(sql);
         db.execSQL(sql1);
@@ -46,6 +49,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL(sql4);
         db.execSQL(sql5);
         db.execSQL(sql6);
+        db.execSQL(sql7);
+        db.execSQL(sql8);
 
 
 

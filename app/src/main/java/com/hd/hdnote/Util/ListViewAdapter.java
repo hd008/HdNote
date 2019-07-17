@@ -52,7 +52,7 @@ public class ListViewAdapter extends BaseAdapter {
         }else{
             viewHolder= (ViewHolder) convertView.getTag();
         }
-        viewHolder.tvContent.setText(" "+list.get(position).time+"  "+list.get(position).thing);
+        viewHolder.tvContent.setText("                  "+list.get(position).time+" 点                                         "+list.get(position).thing+"");
 
 //      点击事件
         final ViewHolder  finalViewHolder= viewHolder;

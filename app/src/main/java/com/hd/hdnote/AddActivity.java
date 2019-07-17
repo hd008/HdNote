@@ -70,7 +70,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
     public void showSingleAlertDialog2(View view){
-        final String[] items = {"6","7","8"};
+        final String[] items = {"6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("请选择时间");
         alertBuilder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
@@ -105,6 +105,11 @@ public class AddActivity extends AppCompatActivity {
         Utils.add(this,String.valueOf(button2.getText()),time,String.valueOf(editText.getText()));
         Intent intent1 = new Intent(this,MainActivity.class);
         startActivity(intent1);
+    }
+
+    public void back(View view){
+        Intent intent = new Intent(this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);//跳转到主页面
+        startActivity(intent);//并且清空之前activity栈
     }
 
 

@@ -7,10 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import com.hd.hdnote.Dao.DatabaseHelper;
 import com.hd.hdnote.Dao.Thing;
 
+import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Queue;
 
 public class Utils {
 
@@ -19,6 +23,88 @@ public class Utils {
     public static Thing thing;
 
     private static DatabaseHelper dbHelper;
+    public  static void init(Context context){
+
+        dbHelper = DatabaseHelper.getInstance(context);//数据库传递 context
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        //判断是否为新的一天 如果是则将 today清空
+        Cursor cursor3 = db.rawQuery("select * from tbdate",null);
+        while(cursor3.moveToNext()){
+            String date = cursor3.getString(cursor3.getColumnIndex("date"));
+            SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd"); //加上时间
+            //必须捕获异常
+            try {//判断日期大小
+                Date fdate=sDateFormat.parse(date);
+                Date odate=new Date();
+                Calendar aCalendar = Calendar.getInstance();
+                aCalendar.setTime(fdate);
+                int day1 = aCalendar.get(Calendar.DAY_OF_YEAR);
+                aCalendar.setTime(odate);
+                int day2 = aCalendar.get(Calendar.DAY_OF_YEAR);
+                int days=day2-day1;
+
+                if(days>0){
+                    db.execSQL("delete from Today where 1=1");
+                }
+                db.execSQL("delete from tbdate where 1=1");
+
+                db.execSQL("insert into  tbdate(date) values('"+sDateFormat.format(odate)+"')");
+
+
+            }
+                catch(ParseException px) {
+                px.printStackTrace();
+            }
+        }
+
+
+        Cursor cursor=db.rawQuery("select * from Everyday  ",null);
+//如果everyday没加过则添加进去
+        while (cursor.moveToNext()){
+            int id =cursor.getInt(cursor.getColumnIndex("id"));
+            Cursor cursor2=db.rawQuery("select * from Today where id=?",new String[]{id+""});
+            if(!cursor2.moveToNext()){//判断是否添加过,没有则添加
+            int time=cursor.getInt(cursor.getColumnIndex("time"));
+            String thing = cursor.getString(cursor.getColumnIndex("thing"));
+            String sql= "insert into  Today(id,time,thing,ok) values("+id+","+time+",'"+thing+"',0)";
+            db.execSQL(sql);}
+        }
+
+
+
+        //如果tomorrow没加过 则添加进去
+        Cursor cursor1=db.rawQuery("select * from Tomorrow",null);
+        while (cursor.moveToNext()){
+            String strDate=cursor1.getString(cursor1.getColumnIndex("date"));
+            //注意：SimpleDateFormat构造函数的样式与strDate的样式必须相符
+            SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //加上时间
+            //必须捕获异常
+            try {//判断日期大小
+                Date date=sDateFormat.parse(strDate);
+                Date date1=new Date();
+                int i=date1.compareTo(date);//比较现在时间和数据库存的时间 大于则为1
+                System.out.println(i);
+                if(i>0){
+                    int id =cursor.getInt(cursor.getColumnIndex("id"));
+
+
+                    int time=cursor.getInt(cursor.getColumnIndex("time"));
+                    String thing = cursor.getString(cursor.getColumnIndex("thing"));
+                    String sql1= "insert into  Today(id,time,thing,ok) values("+id+","+time+",'"+thing+"',0)";
+                    db.execSQL(sql1);
+
+                    delete(context,"Tomorrow",id);
+                }
+            } catch(ParseException px) {
+                px.printStackTrace();
+            }
+        }
+        System.out.println("初始化数据库判断完成");
+
+
+    }
 
 
     public static List<Thing> getThing(Context context) {
@@ -33,16 +119,19 @@ public class Utils {
         //查询数据库
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-            Cursor cursor = db.rawQuery("select * from Today order by time", null);
+        Cursor cursor=db.rawQuery("select * from Today order by time ",null);
+
 
             while (cursor.moveToNext()) {
 
-                thing = new Thing();
-                thing.id=cursor.getInt(cursor.getColumnIndex("id"));
-                thing.time= cursor.getInt(cursor.getColumnIndex("time"));
-                thing.thing= cursor.getString(cursor.getColumnIndex("thing"));
+                    thing = new Thing();
+                    thing.id=cursor.getInt(cursor.getColumnIndex("id"));
+                    thing.time= cursor.getInt(cursor.getColumnIndex("time"));
+                    thing.thing= cursor.getString(cursor.getColumnIndex("thing"));
+                    if(cursor.getInt(cursor.getColumnIndex("ok"))==0)
+                        {
+                        list.add(thing);}
 
-                list.add(thing);
 
             }
 
@@ -85,7 +174,9 @@ public class Utils {
         }
 
         cursor.close();
+        System.out.println("列表获取完成 导入适配器成功");
         return list;
+
     }
 
     public static void delete(Context context,String table,int id) {
@@ -93,14 +184,19 @@ public class Utils {
 
 
         dbHelper = DatabaseHelper.getInstance(context);//数据库传递 context
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
 
         //Int size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));
         //查询数据库
 
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if(table.contains("Today")){
+            db.execSQL("update Today set ok=1 where id="+id);
+        }
+        else {
 
         String[] whereArgs = {String.valueOf(id)};
-        db.delete(table,"id=?",whereArgs);
+        db.delete(table,"id=?",whereArgs);}
     }
 
     public static  void add(Context context,String table,int time,String thing){
@@ -124,9 +220,23 @@ public class Utils {
         }
         if(table.contains("Tomorrow")) {
 
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            sql6 = "insert into  Tomorrow(id,time,thing,date) values("+id+","+time+",'"+thing+"','"+sdf.format(date)+"')";
+//            Date date = new Date();
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            Format f = new SimpleDateFormat("yyyy-MM-dd");
+
+            Date today = new Date();
+            System.out.println("今天是:" + f.format(today));
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(today);
+            c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
+
+            Date tomorrow = c.getTime();
+            System.out.println("明天是:" + f.format(tomorrow));
+
+
+            sql6 = "insert into  Tomorrow(id,time,thing,date) values("+id+","+time+",'"+thing+"','"+f.format(tomorrow)+"')";
         }
         if(table.contains("Everyday")){
 

@@ -11,13 +11,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?android:attr/selectableItemBackground"
-            android:gravity="center"
+            android:gravity="center_vertical"
+            android:textColor="#333333"
+            android:textSize="18dp"
             android:text="项目中我是任意复杂的原ContentItem布局"/>
         <Button
             android:id="@+id/btnDelete"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:background="#FF0000"
+            android:background="#A8A8AA"
             android:text="删除"
             android:textColor="@android:color/white"/>
     </com.mcxtzhang.swipemenulib.SwipeMenuLayout>

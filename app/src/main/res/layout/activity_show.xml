@@ -7,8 +7,8 @@
     tools:context=".ShowActivity">
 
     <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,22 +19,39 @@
             android:id="@+id/top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#333333"
             android:gravity="center">
+            <Button
+                android:onClick="back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:background="#333333"
+
+                android:text="back"/>
 
             <Button
                 android:id="@+id/add"
                 android:onClick="add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="add"/>
+                android:textColor="#FFFFFF"
+                android:background="#333333"
+
+                android:text="+"/>
 
         </LinearLayout>
 
         <ListView
+
             android:id="@+id/mylist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/top"></ListView>
+            android:layout_below="@+id/top"
+            >
+
+
+        </ListView>
 
 
 

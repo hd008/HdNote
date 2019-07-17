@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.hd.hdnote.Dao.DatabaseHelper;
+import com.hd.hdnote.Util.Utils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,7 +33,7 @@ public class start extends AppCompatActivity {
             }
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_start);
 
         dbHelper =  DatabaseHelper.getInstance(this);//用getinstance（自己创建的） 初始化数据库 创表
         SQLiteDatabase db = dbHelper.getWritableDatabase();

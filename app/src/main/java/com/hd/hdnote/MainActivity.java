@@ -41,12 +41,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener  
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbHelper =  DatabaseHelper.getInstance(this);//用getinstance（自己创建的） 初始化数据库 创表
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         mylist = (ListView) findViewById(R.id.mylist);
 
         list = new ArrayList<>();
+
+        Utils.init(this);
+
 
         list = Utils.getThing(this);
 
@@ -100,9 +101,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener  
                 Intent intent2 =new Intent(MainActivity.this,ShowActivity.class);
                 intent2.putExtra("table","Everyday");
                 startActivity(intent2);
+                break;
+
             case R.id.add:
                 Intent intent3 = new Intent(MainActivity.this,AddActivity.class);
                 startActivity(intent3);
+                break;
 
             default:
                 break;

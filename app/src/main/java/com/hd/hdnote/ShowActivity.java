@@ -51,5 +51,9 @@ public class ShowActivity extends AppCompatActivity {
         Intent intent3 = new Intent(this,AddActivity.class);
         startActivity(intent3);
     }
+    public void back(View view){
+        Intent intent = new Intent(this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);//跳转到主页面
+        startActivity(intent);//并且清空之前activity栈
+    }
 
 }

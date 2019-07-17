@@ -5,30 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <Button
+        android:onClick="back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:textColor="#333333"
+        android:background="#FFFFFF"
+        android:text="back"
+        />
 
     <Button
         android:id="@+id/button2"
         android:text="Today"
         android:onClick="showSingleAlertDialog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="#333333"
+        android:background="#FFFFFF"
+        android:layout_marginTop="60dp"/>
     <Button
         android:id="@+id/button3"
         android:text="6"
         android:onClick="showSingleAlertDialog2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="#333333"
+        android:background="#FFFFFF"/>
     <EditText
         android:id="@+id/thing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="test"/>
+        android:textColor="#333333"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:hint="请输入事件"/>
     <Button
         android:id="@+id/submit"
         android:onClick="submit"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#111111"
+        android:background="#FFFFFF"
         android:text="提交"/>
 
 
